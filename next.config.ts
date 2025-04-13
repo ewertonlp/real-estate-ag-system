@@ -1,7 +1,38 @@
-import type { NextConfig } from "next";
+// next.config.js
+const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/dashboard',
+        permanent: true,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/profile',
+        has: [{ type: 'query', key: 'mock' }],
+        destination: '/profile',
+      },
+      {
+        source: '/api/v1/:path*',
+        destination: '/api/:path*',
+      },
+    ]
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+        port: '',
+        pathname: '/api/**',
+      },
+      // Adicione outros padrões se necessário
+    ],
+  },
+}
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-
-export default nextConfig;
+module.exports = nextConfig

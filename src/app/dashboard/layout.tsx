@@ -1,9 +1,10 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import "../globals.css";
+import Sidebar from "../components/Layout/sidebar";
+import Header from "../components/Layout/header";
 // import { ThemeProvider } from "@/context/themeContext";
 import { Providers } from "@/context/themeProvider";
-import { GlobalPageLoader, } from "./components/pageLoader";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -22,17 +23,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light antialiased" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <body className={`${poppins.variable} antialiased`}>
         <Providers>
-          <div className="lg:flex">
-            {/* Conteúdo principal */}
-            <div className="w-full h-full">
-              <main className=" min-h-screen">
-              <GlobalPageLoader />
-                {children}
-              </main>
-            </div>
+          <Sidebar />
+
+          {/* Header fixo */}
+          <div className="fixed top-0 right-0 w-full z-50 ">
+            <Header />
+          </div>
+          {/* Conteúdo principal */}
+          <div className="lg:ml-64">
+            {/* Conteúdo abaixo do header */}
+            <main className="pt-16 lg:pt-20 p-8 min-h-screen bg-[var(--background-color)] dark:bg-[var(--background-color)]">
+              {children}
+            </main>
           </div>
         </Providers>
       </body>
