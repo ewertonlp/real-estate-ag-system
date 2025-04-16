@@ -10,26 +10,28 @@ import Loading from "@/app/components/ui/loading";
 export default function LeadDetails() {
   const router = useRouter();
   const params = useParams();
-  const leadId = (params.id);
-  const [lead, setLead] = useState<Leads| null>(null);
+  const leadId = params.id;
+  const [lead, setLead] = useState<Leads | null>(null);
 
   useEffect(() => {
     const found = leadsMock.find((c) => c.id === leadId);
     setLead(found ?? null);
   }, [leadId]);
 
-  if (!lead) return <Loading/>;
+  if (!lead) return <Loading />;
 
   const handleEdit = () => {
-    router.push(`/dashboard/clients/${leadId}/edit`);
+    router.push(`/dashboard/leads/${leadId}/edit`);
   };
 
   const handleDelete = () => {
-    const confirmDelete = confirm("Are you sure you want to delete this client?");
+    const confirmDelete = confirm(
+      "Are you sure you want to delete this client?"
+    );
     if (confirmDelete) {
       // Aqui você pode implementar a exclusão via API ou atualizar o estado
       alert("Client deleted! (This is just a mock)");
-      router.push("/dashboard/clients");
+      router.push("/dashboard/leads");
     }
   };
 
@@ -61,7 +63,6 @@ export default function LeadDetails() {
             <span className="hidden sm:inline">Delete</span>
           </button>
         </div>
-      
       </div>
 
       <div className="grid grid-cols-[25%_75%] h-auto w-full  bg-[var(--card)] rounded-sm my-6">
@@ -70,20 +71,18 @@ export default function LeadDetails() {
           <p className="text-lg mb-2">
             <strong>Name:</strong> {lead.name}
           </p>
-          <p>
-            {/* <strong>ID: </strong> {client.idDocument} */}
-          </p>
+          <p>{/* <strong>ID: </strong> {client.idDocument} */}</p>
           <span
-                    className={`px-3 py-1 mt-2 text-sm font-semibold rounded-lg ${
-                      lead.status === "Contract Signed"
-                        ? "bg-green-100 text-green-700"
-                        : lead.status === "Canceled"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-blue-100 text-blue-700"
-                    }`}
-                  >
-                    {lead.status}
-                  </span>
+            className={`px-3 py-1 mt-2 text-sm font-semibold rounded-lg ${
+              lead.status === "converted"
+                ? "bg-green-100 text-green-700"
+                : lead.status === "contacted"
+                ? "bg-red-100 text-orange-600"
+                : "bg-blue-100 text-blue-700"
+            }`}
+          >
+            {lead.status}
+          </span>
           <div className="flex items-center justify-center pt-8 gap-6">
             <a
               href={`https://wa.me/${lead.phone}`}
@@ -110,9 +109,8 @@ export default function LeadDetails() {
               <span className="font-semibold">Phone</span>
               <p>{lead.phone}</p>
             </div>
-            
           </div>
-     
+
           <div className="px-6 py-8 grid grid-cols-1 md:grid-cols-2">
             <div>
               <span className="font-semibold">Interest</span>

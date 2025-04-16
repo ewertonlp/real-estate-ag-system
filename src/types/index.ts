@@ -65,7 +65,9 @@ export interface Leads {
   city?: string;
   state?: string;
   zip?: string;
-  status: 'new' | 'contacted' | 'converted';
+  interest?: string;
+  status: 'New' | 'Contacted' | "In Negotiation" ;
+  createdAt: Date;
   convertedAt?: string;
 }
 
@@ -81,6 +83,7 @@ export interface Clients {
   city: string;
   state: string;
   idDocument: string;
+  createdAt: Date;
   convertedFrom?: number;
 }
 
@@ -97,8 +100,8 @@ export interface Agents {
     type?: string;
   }>;
   role: string;
-  createdAt: Date | string | null;
-  updatedAt: Date | string | null;
+  createdAt: Date ;
+  updatedAt: Date ;
   accounts?: Account[];
   properties?: Property[];
 }

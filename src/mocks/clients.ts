@@ -13,6 +13,7 @@ export const clients: Clients[] = [
     city: "Los Angeles",
     state: "CA",
     idDocument: "ID123456789",
+    createdAt: new Date("2023-03-01"),
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ export const clients: Clients[] = [
     city: "New York",
     state: "NY",
     idDocument: "ID987654321",
+    createdAt: new Date("2024-03-10"),
   },
   {
     id: 3,
@@ -39,6 +41,7 @@ export const clients: Clients[] = [
     city: "Chicago",
     state: "IL",
     idDocument: "ID456789123",
+    createdAt: new Date("2024-12-01"),
   },
   {
     id: 4,
@@ -52,6 +55,7 @@ export const clients: Clients[] = [
     city: "Austin",
     state: "TX",
     idDocument: "ID321654987",
+    createdAt: new Date("2024-11-01"),
   },
   {
     id: 5,
@@ -65,6 +69,7 @@ export const clients: Clients[] = [
     city: "Atlanta",
     state: "GA",
     idDocument: "ID852963741",
+    createdAt: new Date("2025-01-17"),
   },
   {
     id: 6,
@@ -78,6 +83,7 @@ export const clients: Clients[] = [
     city: "Miami",
     state: "FL",
     idDocument: "ID147258369",
+    createdAt: new Date("2024-10-24"),
   },
   {
     id: 7,
@@ -91,6 +97,7 @@ export const clients: Clients[] = [
     city: "Seattle",
     state: "WA",
     idDocument: "ID963852741",
+    createdAt: new Date("2024-12-08"),
   },
   {
     id: 8,
@@ -104,6 +111,7 @@ export const clients: Clients[] = [
     city: "Philadelphia",
     state: "PA",
     idDocument: "ID369741258",
+    createdAt: new Date("2025-03-01"),
   },
   {
     id: 9,
@@ -117,6 +125,7 @@ export const clients: Clients[] = [
     city: "Phoenix",
     state: "AZ",
     idDocument: "ID159753486",
+    createdAt: new Date("2025-02-01"),
   },
   {
     id: 10,
@@ -130,5 +139,6 @@ export const clients: Clients[] = [
     city: "Denver",
     state: "CO",
     idDocument: "ID951357456",
+    createdAt: new Date("2024-09-01"),
   },
 ];

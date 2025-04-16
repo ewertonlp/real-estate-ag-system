@@ -11,7 +11,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Administrator",
-    createdAt: new Date().toISOString(),
+    createdAt: "2023-10-20",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -24,7 +24,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Real Estate Agent",
-    createdAt: new Date().toISOString(),
+    createdAt: "2024-05-20",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -37,7 +37,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Real Estate Agent",
-    createdAt: new Date().toISOString(),
+    createdAt: "2024-02-17",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -50,7 +50,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Real Estate Agent",
-    createdAt: new Date().toISOString(),
+    createdAt: "2023-12-22",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -63,7 +63,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: 'Real Estate Agent',
-    createdAt: new Date().toISOString(),
+    createdAt: "2024-07-20",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -76,7 +76,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Real Estate Agent",
-    createdAt: new Date().toISOString(),
+    createdAt: "2024-09-11",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -89,7 +89,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Real Estate Agent",
-    createdAt: new Date().toISOString(),
+    createdAt: "2024-11-20",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -102,7 +102,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Real Estate Agent",
-    createdAt: new Date().toISOString(),
+    createdAt: "2024-11-20",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -115,7 +115,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Real Estate Agent",
-    createdAt: new Date().toISOString(),
+    createdAt: "2025-01-08",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
   {
@@ -128,7 +128,7 @@ export const agentList = [
     address: '123 Main St, New York',
     avatar: [{ url: "/avatar.jpg" }],
     role: "Real Estate Agent",
-    createdAt: new Date().toISOString(),
+    createdAt: "2024-05-07",
     updatedAt: new Date().toISOString(),
   } satisfies Agents,
 ];

@@ -4,7 +4,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Leads, Clients } from "@/types";
-import { mockLeads } from "@/mocks/leads";
+import { leadsMock } from "@/mocks/leads";
 import { ArrowLeft, MoveLeft, Save, BadgeCheck } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { toast } from "sonner";
@@ -12,12 +12,12 @@ import { toast } from "sonner";
 export default function EditLead() {
   const router = useRouter();
   const params = useParams();
-  const leadId = Number(params.id);
+  const leadId = (params.id);
   const [lead, setLead] = useState<Leads | null>(null);
   const [isConverting, setIsConverting] = useState(false);
 
   useEffect(() => {
-    const found = mockLeads.find((c) => c.id === leadId);
+    const found = leadsMock.find((c) => c.id === leadId);
     setLead(found ?? null);
   }, [leadId]);
 
@@ -41,7 +41,7 @@ export default function EditLead() {
       // Criar novo cliente
       const newClient: Leads= {
         ...lead,
-        id: lead.length + 1,
+        id: leadsMock.length + 1,
         clientSince: new Date().toISOString(),
         convertedFrom: lead.id,
         // Remover campos específicos de lead
@@ -50,10 +50,10 @@ export default function EditLead() {
       };
 
       // Atualizar mocks
-      clients.push(newClient);
-      const leadIndex = mockLeads.findIndex(l => l.id === leadId);
+      leadsMock.push(newClient);
+      const leadIndex = leadsMock.findIndex(l => l.id === leadId);
       if (leadIndex > -1) {
-        mockLeads[leadIndex] = {
+        leadsMock[leadIndex] = {
           ...lead,
           status: 'converted',
           convertedAt: new Date().toISOString()

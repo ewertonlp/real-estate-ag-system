@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Button } from "@/app/components/ui/button";
-import { Plus, TrendingUp, Building, CircleDollarSign} from "lucide-react";
+import { Plus, TrendingUp,  } from "lucide-react";
 import Link from "next/link";
 import {
   Pagination,
@@ -15,7 +15,6 @@ import {
 import Loading from "@/app/components/ui/loading";
 import { salesMock } from "@/mocks/sales";
 import { Sales } from "@/types";
-import { Card } from "@/app/components/ui/card";
 
 export default function Vendas() {
   const [filtroStatus, setFiltroStatus] = useState<string>("All");
@@ -25,7 +24,6 @@ export default function Vendas() {
   useEffect(() => {
     const loadSales = () => {
       try {
-        // Convertendo para o tipo correto
         const typedSales = salesMock as Sales[];
         setSalesData(typedSales);
       } catch (error) {
@@ -39,6 +37,10 @@ export default function Vendas() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleStatusFilter = (status: string) => {
+    setFiltroStatus(status);
+  };
+
   const salesFiltereds =
     filtroStatus === "All"
       ? salesData
@@ -47,7 +49,7 @@ export default function Vendas() {
   if (loading) return <Loading />;
 
   return (
-    <div className="max-w-screen p-2 bg-[var(--background-color)]">
+    <div className="max-w-screen p-2 bg-[var(--background-color)] min-h-screen">
       {/* Cabeçalho */}
       <div className="flex justify-between items-center border-b border-[var(--border)] py-4">
         <div className="flex items-center">
@@ -64,108 +66,87 @@ export default function Vendas() {
         </div>
       </div>
 
-      {/* Resumo das Vendas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
-        <Card
-          title="Total Sales"
-          value={
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-[var(--primary)]" />${" "}
-              {salesData
-                .reduce((sum, sale) => sum + sale.value, 0)
-                .toLocaleString()}
-            </div>
-          }
-        />
+      {/* Cards de Status */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 my-6">
+        {["All", "Completed", "In progress", "Pending", "Canceled"].map((status) => (
+          <div
+            key={status}
+            className={`p-4 rounded-sm shadow border-l-4 cursor-pointer transition-colors ${
+              filtroStatus === status ? 'bg-[var(--primary)]' : 'bg-[var(--card)]'
+            } ${
+              status === "All" ? "border-l-[var(--primary)]" :
+              status === "Completed" ? "border-l-green-500" :
+              status === "In progress" ? "border-l-blue-500" :
+              status === "Pending" ? "border-l-yellow-500" : "border-l-red-500"
+            }`}
+            onClick={() => handleStatusFilter(status)}
+          >
+            <p className="text-sm text-text">{status}</p>
+            <h2 className="text-xl font-bold">
+              {status === "All" 
+                ? salesData.length 
+                : salesData.filter(s => s.status === status).length}
+            </h2>
+          </div>
+        ))}
+      </div>
 
-        <Card
-          title="Properties Sold"
-          value={
-            <div className="flex items-center gap-2">
-              
-              <Building className="h-5 w-5 text-[var(--primary)]" />
-              {/* Ícone de imóveis */}
-              <span className="text-xl font-bold">
-                {salesData.length.toLocaleString()}
+      {/* Cards de Vendas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {salesFiltereds.map((sale) => (
+          <div key={sale.id} className="bg-[var(--card)] p-4 rounded-sm shadow-sm">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-[var(--text)]">{sale.buyer}</h3>
+                <p className="text-sm text-text/90">{sale.address}</p>
+              </div>
+              <span
+                className={`px-2 py-1 text-xs font-semibold rounded-lg ${
+                  sale.status === "Completed" ? "bg-green-100 text-green-700" :
+                  sale.status === "Canceled" ? "bg-red-100 text-red-700" :
+                  sale.status === "In progress" ? "bg-blue-100 text-blue-700" : "bg-yellow-100 text-yellow-700"
+                }`}
+              >
+                {sale.status}
               </span>
             </div>
-          }
-        />
-        <Card
-        title="Total Commissions"
-        value={
-          <div className="flex items-center gap-2">
-            <CircleDollarSign className="h-5 w-5 text-[var(--primary)]"/>
-            <span className="text-xl font-bold">
-            ${" "}
-            {salesData
-              .reduce((sum, sale) => sum + sale.commission, 0)
-              .toLocaleString()}
-            </span>
+
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-text/70">Value:</span>
+                <span className="font-medium">$ {sale.value.toLocaleString()}</span>
+              </div>
+              
+              <div className="flex justify-between text-sm">
+                <span className="text-text/70">Agent:</span>
+                <span className="font-medium">{sale.agent}</span>
+              </div>
+
+              <div className="flex justify-between text-sm">
+                <span className="text-text/70">Date:</span>
+                <span className="text-text/90">
+                  {new Date(sale.date).toLocaleDateString('en-US', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                  })}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-[var(--border)]">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-text/70">Commission:</span>
+                <span className="font-medium text-[var(--primary)]">
+                  $ {sale.commission.toLocaleString()}
+                </span>
+              </div>
+            </div>
           </div>
-        }
-        />
+        ))}
       </div>
 
-      {/* Filtros */}
-      <div className="mb-4">
-        <label className="text-text font-medium">Filter by Status:</label>
-        <select
-          className="ml-2 p-2 border rounded bg-[var(--card)]"
-          value={filtroStatus}
-          onChange={(e) => setFiltroStatus(e.target.value)}
-        >
-          <option value="All">All</option>
-          <option value="Completed">Completed</option>
-          <option value="In progress">In progress</option>
-          <option value="Pending">Pending</option>
-          <option value="Canceled">Canceled</option>
-        </select>
-      </div>
-
-      {/* Lista de Vendas */}
-      <div className="bg-[var(--card)] shadow-sm rounded-sm overflow-hidden">
-        <table className="w-full table-auto">
-          <thead className="bg-[var(--primary)] border-b border-[var(--border)] ">
-            <tr>
-              <th className="p-3 text-left font-medium">Buyer</th>
-              <th className="p-3 text-left font-medium">Address</th>
-              <th className="p-3 text-left font-medium">Value</th>
-              <th className="p-3 text-left font-medium">Agent</th>
-              <th className="p-3 text-left font-medium">Status</th>
-              <th className="p-3 text-left font-medium">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {salesFiltereds.map((sale) => (
-              <tr
-                key={sale.id}
-                className="border-b border-[var(--border)] text-sm hover:bg-[var(--hover)] cursor-pointer"
-              >
-                <td className="p-3">{sale.buyer}</td>
-                <td className="p-3">{sale.address}</td>
-                <td className="p-3">$ {sale.value.toLocaleString()}</td>
-                <td className="p-3">{sale.agent}</td>
-                <td className="px-4 py-3">
-                  <span
-                    className={`px-3 py-1 text-xs font-semibold rounded-lg ${
-                      sale.status === "Completed"
-                        ? "bg-green-100 text-green-700"
-                        : sale.status === "Canceled"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-orange-100 text-orange-700"
-                    }`}
-                  >
-                    {sale.status}
-                  </span>
-                </td>
-                <td className="p-3">{new Date(sale.date).toDateString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
+      {/* Paginação */}
       {salesFiltereds.length > 0 && (
         <div className="bg-[var(--card)] shadow rounded-sm overflow-hidden mt-6 py-2">
           <Pagination>
@@ -189,30 +170,3 @@ export default function Vendas() {
     </div>
   );
 }
-
-export const BuildingIcon = () => {
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="lucide lucide-building-icon lucide-building"
-  >
-    <rect width="16" height="20" x="4" y="2" rx="2" ry="2" />
-    <path d="M9 22v-4h6v4" />
-    <path d="M8 6h.01" />
-    <path d="M16 6h.01" />
-    <path d="M12 6h.01" />
-    <path d="M12 10h.01" />
-    <path d="M12 14h.01" />
-    <path d="M16 10h.01" />
-    <path d="M16 14h.01" />
-    <path d="M8 10h.01" />
-    <path d="M8 14h.01" />
-  </svg>;
-};

@@ -38,7 +38,7 @@ export function GlobalPageLoader() {
 
   return (
     <>
-      <Progress value={progress} className="fixed top-0 left-0 w-full z-500 h-2 bg-muted bg-[var(--primary)]" />
+      <Progress value={progress} className="fixed top-0 left-0 w-full z-500 h-1 bg-muted bg-[var(--primary)]" />
     </>
   )
 }
