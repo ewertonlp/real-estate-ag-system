@@ -39,7 +39,7 @@ export const DetailPanel = ({
         style={{
           transform: isOpen ? "translateX(0)" : "translateX(110%)",
           width: "100vw",
-          maxWidth: "600px",
+          maxWidth: "900px",
         }}
       >
         <div className="h-full flex flex-col">
@@ -57,7 +57,7 @@ export const DetailPanel = ({
           </div>
 
           <div className="flex-1 overflow-y-auto p-6">
-            <h2 className="text-xl font-semibold mb-4">Details</h2>
+            <h2 className="text-xl font-semibold mb-4 border-b border-[var(--border)]">Details</h2>
             {children}
           </div>
         </div>

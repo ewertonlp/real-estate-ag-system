@@ -7,15 +7,18 @@ import {
   Contact,
   UserPlus,
   Calendar,
+  PenLine,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/app/components/ui/button";
 import { agentList } from "@/mocks/team";
 import { Agents } from "@/types";
 import Loading from "@/app/components/ui/loading";
 import { DetailPanel } from "@/app/components/detailPanel";
 
-export default function Corretores() {
+
+export default function RealEstateAgents() {
   const [agents, setAgents] = useState<Agents[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterName, setFilterName] = useState("");
@@ -23,6 +26,10 @@ export default function Corretores() {
   const [filterEmail, setFilterEmail] = useState("");
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<Agents | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedAgent, setEditedAgent] = useState<Agents | null>(null);
+
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,6 +38,12 @@ export default function Corretores() {
     }, 500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (selectedAgent && !isEditing) {
+      setEditedAgent({ ...selectedAgent });
+    }
+  }, [selectedAgent, isEditing]);
 
   const filteredAgents = agents.filter((agent) => {
     const matchesName = agent.name
@@ -52,11 +65,32 @@ export default function Corretores() {
 
   const handleClosePanel = () => {
     setIsPanelOpen(false);
-    // Limpa o agente selecionado após a animação
     setTimeout(() => setSelectedAgent(null), 300);
   };
 
-  if (loading) return <Loading />;
+  const handleSave = () => {
+    if (editedAgent) {
+      setAgents((prev) =>
+        prev.map((agent) => (agent.id === editedAgent.id ? editedAgent : agent))
+      );
+      setIsEditing(false);
+      setSelectedAgent(editedAgent);
+    }
+  };
+
+  const handleCancel = () => {
+    if (selectedAgent) {
+      setEditedAgent({ ...selectedAgent }); // Restaura os dados originais
+    }
+    setIsEditing(false);
+  };
+  
+
+  const handleFieldChange = (field: keyof Agents, value: string) => {
+    setEditedAgent((prev) => (prev ? { ...prev, [field]: value } : null));
+  };
+
+  if (!agents) return <Loading />;
 
   return (
     <div className="max-w-screen p-2 bg-[var(--background-color)] min-h-screen">
@@ -159,7 +193,7 @@ export default function Corretores() {
             </div>
 
             <div className="flex justify-between items-center mt-4 pt-4 border-t border-[var(--border)]">
-            <button
+              <button
                 className="text-text hover:text-[var(--primary)] flex items-center gap-1 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -184,34 +218,106 @@ export default function Corretores() {
       )}
 
       <DetailPanel isOpen={isPanelOpen} onClose={handleClosePanel}>
-        {selectedAgent && (
-          <div className="space-y-4">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold">{selectedAgent.name}</h3>
-              <p className="text-sm text-text/70">{selectedAgent.license}</p>
-            </div>
+        {editedAgent && (
+          <div className="h-10/12 flex flex-col p-2">
+            <div className="flex-grow space-y-3">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  {selectedAgent?.avatar ? (
+                    <Image
+                      src={selectedAgent.avatar[0].url}
+                      alt="Avatar"
+                      className="w-35 h-35 rounded-full"
+                      width={100}
+                      height={100}
+                      priority={false}
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500">No photo</span>
+                    </div>
+                  )}
+                  <div className="ml-4">
+                    {isEditing ? (
+                      <input
+                        value={editedAgent.name}
+                        onChange={(e) =>
+                          handleFieldChange("name", e.target.value)
+                        }
+                        className="text-2xl font-bold bg-transparent border-b"
+                      />
+                    ) : (
+                      <h3 className="text-2xl font-bold">{editedAgent.name}</h3>
+                    )}
+                    <p className="text-sm text-text/70">
+                      <span>License: </span>
+                      {isEditing ? (
+                        <input
+                          value={editedAgent.license}
+                          onChange={(e) =>
+                            handleFieldChange("license", e.target.value)
+                          }
+                          className="bg-transparent border-b"
+                        />
+                      ) : (
+                        editedAgent.license
+                      )}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  {isEditing ? (
+                    <>
+                      <Button onClick={handleSave} variant="solid">
+                        Save
+                      </Button>
+                      <Button onClick={handleCancel} variant="outline">
+                        Cancel
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      onClick={() => setIsEditing(true)}
+                      variant="edit"
+                      size="icon"
+                    >
+                      <PenLine size={22} />
+                    </Button>
+                  )}
+                </div>
+              </div>
 
-            <div className="space-y-2">
-              <DetailItem
-                label="Email"
-                value={selectedAgent.email}
-                icon={<Mail size={18} />}
-              />
-              <DetailItem
-                label="Phone"
-                value={selectedAgent.phone}
-                icon={<MessageCircle size={18} />}
-              />
-              <DetailItem
-                label="Registration Date"
-                value={new Date(selectedAgent.createdAt).toLocaleDateString()}
-                icon={<Calendar size={18} />}
-              />
-            </div>
+              <div className="space-y-3 pt-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
 
-            <div className="mt-6 pt-4 border-t border-[var(--border)]">
-              <h4 className="font-semibold mb-2">Additional Information</h4>
-              {/* Adicione mais campos conforme necessário */}
+                <EditableDetailItem
+                  label="Email"
+                  value={editedAgent.email}
+                  icon={<Mail size={18} />}
+                  editing={isEditing}
+                  onChange={(value) => handleFieldChange("email", value)}
+                />
+                <EditableDetailItem
+                  label="Phone"
+                  value={editedAgent.phone}
+                  icon={<MessageCircle size={18} />}
+                  editing={isEditing}
+                  onChange={(value) => handleFieldChange("phone", value)}
+                />
+                </div>
+                <EditableDetailItem
+                  label="Address"
+                  value={editedAgent.address}
+                  icon={<MessageCircle size={18} />}
+                  editing={isEditing}
+                  onChange={(value) => handleFieldChange("address", value)}
+                />
+                <DetailItem
+                  label="Registration Date"
+                  value={new Date(editedAgent.createdAt).toLocaleDateString()}
+                  icon={<Calendar size={18} />}
+                />
+              </div>
             </div>
           </div>
         )}
@@ -235,6 +341,36 @@ const DetailItem = ({
     <div>
       <p className="text-sm text-text/70">{label}</p>
       <p className="font-medium">{value}</p>
+    </div>
+  </div>
+);
+
+const EditableDetailItem = ({
+  label,
+  value,
+  icon,
+  editing,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  icon?: React.ReactNode;
+  editing: boolean;
+  onChange: (value: string) => void;
+}) => (
+  <div className="flex items-start space-x-3">
+    {icon && <span className="text-[var(--primary)] mt-1">{icon}</span>}
+    <div className="flex-1">
+      <p className="text-sm text-text/70">{label}</p>
+      {editing ? (
+        <input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full bg-transparent border-b focus:outline-none"
+        />
+      ) : (
+        <p className="font-medium">{value}</p>
+      )}
     </div>
   </div>
 );

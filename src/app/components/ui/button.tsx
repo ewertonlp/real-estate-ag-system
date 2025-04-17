@@ -16,7 +16,8 @@ const buttonVariants = cva(
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         cancel: 'bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-800/50 dark:text-white dark:hover:bg-blue-700/50',
-        cancelError: 'bg-red-100 text-red-700 hover:bg-red-200 '
+        cancelError: 'bg-red-100 text-red-700 hover:bg-red-200 ',
+        edit: 'bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-1 py-1 rounded-md flex items-center gap-2 cursor-pointer'
       },
       size: {
         sm: 'h-9 px-3 rounded-md',

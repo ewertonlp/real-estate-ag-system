@@ -110,5 +110,15 @@ export const salesMock: Sales[] = [
       status: "In progress",
       date: "2024-04-28",
       commission: 46000,
+    } satisfies Sales,
+    {
+      id: 12,
+      buyer: "Jhon Yu",
+      address: "Lakefront Ave, 687",
+      value: 945000,
+      agent: "James Anderson",
+      status: "Pending",
+      date: "2025-04-05",
+      commission: 48000,
     } satisfies Sales
   ];
