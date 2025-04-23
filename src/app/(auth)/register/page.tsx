@@ -7,20 +7,21 @@ import { Input } from "../../components/ui/input";
 import { registerAction } from "../../actions/auth";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/app/components/ui/button";
 
 const registerSchema = z
   .object({
-    name: z.string().min(3, "Mínimo 3 caracteres"),
-    email: z.string().email("E-mail inválido"),
+    name: z.string().min(3, "Minimum 3 characters"),
+    email: z.string().email("Invalid email"),
     password: z
       .string()
-      .min(8, "Mínimo 8 caracteres")
-      .regex(/[A-Z]/, "Pelo menos 1 letra maiúscula")
-      .regex(/[0-9]/, "Pelo menos 1 número"),
+      .min(8, "Minimum 8 characters")
+      .regex(/[A-Z]/, "At least 1 uppercase letter")
+      .regex(/[0-9]/, "At least 1 number"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Senhas não coincidem",
+    message: "Passwords don't match",
     path: ["confirmPassword"],
   });
 
@@ -37,7 +38,7 @@ export default function RegisterPage() {
     try {
       await registerAction(data);
     } catch (error) {
-      console.error("Erro no registro:", error);
+      console.error("Registry error:", error);
     }
   };
 
@@ -46,31 +47,31 @@ export default function RegisterPage() {
       <div className="relative md:flex-1 h-screen justify-center content-center hidden md:block bg-[var(--card)]">
         <div className="flex justify-center">
           <Image
-            src="/login-image.webp"
-            alt="Imagem de login"
+            src="/register-image.jpg"
+            alt="Register image"
             width="486"
             height="150"
-            className="object-center object-cover rounded-br-4xl rounded-tl-xl shadow-2xl"
+            className="object-center object-cover rounded-br-4xl rounded-tl-sm shadow-2xl"
             sizes="50vw"
             priority
           />
         </div>
       </div>
       <div className="flex min-h-[50vh] flex-col justify-center md:min-h-full bg-[var(--background-color)]">
-        <div className="mx-auto w-full max-w-md space-y-6 bg-[var(--card)] p-6 rounded-2xl shadow-md">
+        <div className="mx-auto w-full max-w-md space-y-6 bg-[var(--card)] p-6 rounded-sm shadow-sm">
           <div className="flex flex-1 items-center justify-center bg-card p-6">
             <div className="w-full max-w-md space-y-6">
               <div className="space-y-2 text-center">
-                <h1 className="text-2xl font-semibold text-text">Criar Conta</h1>
+                <h1 className="text-2xl font-semibold text-text">Register New Account</h1>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
                   <Input
                     {...register("name")}
-                    placeholder="Nome completo"
+                    placeholder="Full name"
                     error={errors.name?.message}
-                    className="border-[var(--border)] bg-[var(--background-color)]"
+                    className="border-black rounded-sm"
                   />
                   {errors.name && (
                     <p className="mt-1 text-sm text-red-500">
@@ -84,7 +85,7 @@ export default function RegisterPage() {
                     {...register("email")}
                     placeholder="E-mail"
                     error={errors.email?.message}
-                       className="border-[var(--border)] bg-[var(--background-color)]"
+                       className="border-black rounded-sm"
                   />
                   {errors.email && (
                     <p className="mt-1 text-sm text-red-500">
@@ -97,9 +98,9 @@ export default function RegisterPage() {
                   <Input
                     type="password"
                     {...register("password")}
-                    placeholder="Senha"
+                    placeholder="Password"
                     error={errors.password?.message}
-                       className="border-[var(--border)] bg-[var(--background-color)]"
+                       className="border-black rounded-sm"
                   />
                   {errors.password && (
                     <p className="mt-1 text-sm text-red-500">
@@ -112,9 +113,9 @@ export default function RegisterPage() {
                   <Input
                     type="password"
                     {...register("confirmPassword")}
-                    placeholder="Confirme sua senha"
+                    placeholder="Confirm paswword"
                     error={errors.confirmPassword?.message}
-                       className="border-[var(--border)] bg-[var(--background-color)]"
+                       className="border-black rounded-sm"
                   />
                   {errors.confirmPassword && (
                     <p className="mt-1 text-sm text-red-500">
@@ -123,21 +124,21 @@ export default function RegisterPage() {
                   )}
                 </div>
                 <div className="flex justify-center pt-4">
-                  <button
+                  <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-50 rounded-lg bg-[var(--primary)] px-4 py-2 text-white text-lg uppercase hover:bg-[var(--secondary)] transition-all cursor-pointer"
+                    className="w-50 rounded-sm bg-[var(--primary)] px-4 py-2 text-white text-lg hover:bg-[var(--secondary)] transition-all cursor-pointer"
                   >
-                    {isSubmitting ? "Criando conta..." : "Criar Conta"}
-                  </button>
+                    {isSubmitting ? "Creating Account..." : "Create Account"}
+                  </Button>
                 </div>
               </form>
             </div>
           </div>
           <p className="text-sm text-[var(--text)] text-center">
-            Já possui conta?{" "}
+          Already have an account?{" "}
             <Link href="/login">
-              <span className="text-[var(--primary)]">Faça login aqui</span>
+              <span className="text-[var(--primary)]">Log in here</span>
             </Link>
           </p>
         </div>

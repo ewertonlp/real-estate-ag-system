@@ -117,3 +117,39 @@ export interface Sales {
   commission: number;
 }
 
+export interface Message  {
+  id: string;
+  content: string;
+  sender: 'user' | 'other';
+  timestamp: Date;
+  avatar?: string;
+  name: string;
+  online?: boolean;
+};
+
+export interface Conversation {
+  id: string;
+  name: string;
+  avatar: string;
+  lastMessage: string;
+  unread: number;
+  messages: Message[];
+};
+
+export interface Message {
+  id: string;
+  content: string;
+  sender: 'user' | 'other';
+  timestamp: Date;
+  read: boolean;
+};
+
+export interface Conversation {
+  id: string;
+  name: string;
+  avatar: string;
+  lastMessage: string;
+  unread: number;
+  messages: Message[];
+};
+

@@ -13,6 +13,7 @@ import {
   MoveDown,
   Users,
   Contact,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "../ui/button";
 
@@ -75,6 +76,11 @@ export default function Sidebar() {
       href: "/dashboard/team",
       label: "Team",
       icon: <Contact />,
+    },
+    {
+      href: "/dashboard/messages", // Nova rota para mensagens
+      label: "Messages",
+      icon: <MessageCircle />,
     },
   ];
 
